@@ -1,6 +1,6 @@
-﻿// Program.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
@@ -22,7 +22,7 @@ class Program
 
     static void AddClientsAndComptes()
     {
-        // Adding a client
+        // Adding clients
         Client newClient = new Client
         {
             Nom = "roe",
@@ -33,7 +33,6 @@ class Program
 
         BankOperations.AddClient(newClient);
 
-        // Adding another client
         Client anotherClient = new Client
         {
             Nom = "alssa",
@@ -44,7 +43,7 @@ class Program
 
         BankOperations.AddClient(anotherClient);
 
-        // Adding a compte for the first client
+        // Adding comptes
         Compte newCompte = new Compte
         {
             ClientId = 1,
@@ -55,7 +54,6 @@ class Program
 
         BankOperations.AddCompte(newCompte);
 
-        // Adding a compte for the second client
         Compte anotherCompte = new Compte
         {
             ClientId = 2,
@@ -71,7 +69,7 @@ class Program
 
     static void MakeTransactions()
     {
-        // Making a transaction for the first client
+        // Making transactions
         Transaction newTransaction = new Transaction
         {
             CompteId = 1,
@@ -82,14 +80,12 @@ class Program
 
         BankOperations.MakeTransaction(newTransaction);
 
-        // Making a transaction for the second client
         Transaction anotherTransaction = new Transaction
         {
             CompteId = 2,
             TypeTransaction = "Deposit",
             Montant = 500.00m,
             DateTransaction = DateTime.Now
-            
         };
 
         BankOperations.MakeTransaction(anotherTransaction);
@@ -104,14 +100,14 @@ class Program
         {
             foreach (var item in items)
             {
-                Console.WriteLine(item.ToString());
-                
+                Console.WriteLine(item);
             }
         }
         else
         {
             Console.WriteLine("No records found.");
         }
+
         Console.WriteLine(new string('-', 40) + "\n");
     }
 }
