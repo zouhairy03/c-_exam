@@ -1,116 +1,68 @@
-﻿// Program.cs
-using System;
-using System.Collections.Generic;
+﻿using System;
+using ConsoleTables;
 
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("Welcome to the Bank Application!\n");
+        Console.WriteLine("Welcome to the Bank Application!");
 
-        // Adding clients and comptes
-        AddClientsAndComptes();
+        // Adding clients
+        AddClients();
+
+        // Adding comptes
+        AddComptes();
 
         // Making transactions
         MakeTransactions();
 
         // Displaying clients, comptes, and transactions
-        DisplaySection("Clients in the database:", BankOperations.GetClients());
-        DisplaySection("Comptes in the database:", BankOperations.GetComptes());
-        DisplaySection("Transactions in the database:", BankOperations.GetTransactions());
+        DisplayClients();
+        DisplayComptes();
+        DisplayTransactions();
     }
 
-    static void AddClientsAndComptes()
+    // ... (same AddClients, AddComptes, MakeTransactions methods)
+
+    static void DisplayClients()
     {
-        // Adding a client
-        Client newClient = new Client
+        var clients = BankOperations.GetClients();
+        Console.WriteLine("\nClients in the database:");
+
+        var table = new ConsoleTable("Client ID", "Name", "Address", "Phone");
+        foreach (var client in clients)
         {
-            Nom = "roe",
-            Prenom = "nxnc",
-            Adresse = "456 Oak St",
-            NumeroTelephone = "233-5232"
-        };
-
-        BankOperations.AddClient(newClient);
-
-        // Adding another client
-        Client anotherClient = new Client
-        {
-            Nom = "alssa",
-            Prenom = "aowew",
-            Adresse = "789 jsjdds 22",
-            NumeroTelephone = "555-222e"
-        };
-
-        BankOperations.AddClient(anotherClient);
-
-        // Adding a compte for the first client
-        Compte newCompte = new Compte
-        {
-            ClientId = 1,
-            Solde = 1500.00m,
-            TypeCompte = "Checking",
-            DateOuverture = DateTime.Now
-        };
-
-        BankOperations.AddCompte(newCompte);
-
-        // Adding a compte for the second client
-        Compte anotherCompte = new Compte
-        {
-            ClientId = 2,
-            Solde = 2000.00m,
-            TypeCompte = "Savings",
-            DateOuverture = DateTime.Now
-        };
-
-        BankOperations.AddCompte(anotherCompte);
-
-        Console.WriteLine("Clients and comptes added successfully.\n");
-    }
-
-    static void MakeTransactions()
-    {
-        // Making a transaction for the first client
-        Transaction newTransaction = new Transaction
-        {
-            CompteId = 1,
-            TypeTransaction = "Withdrawal",
-            Montant = 200.00m,
-            DateTransaction = DateTime.Now
-        };
-
-        BankOperations.MakeTransaction(newTransaction);
-
-        // Making a transaction for the second client
-        Transaction anotherTransaction = new Transaction
-        {
-            CompteId = 2,
-            TypeTransaction = "Deposit",
-            Montant = 500.00m,
-            DateTransaction = DateTime.Now
-            
-        };
-
-        BankOperations.MakeTransaction(anotherTransaction);
-
-        Console.WriteLine("Transactions made successfully.\n");
-    }
-
-    static void DisplaySection<T>(string title, IEnumerable<T> items)
-    {
-        Console.WriteLine($"\n{title}");
-        if (items.Any())
-        {
-            foreach (var item in items)
-            {
-                Console.WriteLine(item.ToString());
-            }
+            table.AddRow(client.ClientId, $"{client.Nom} {client.Prenom}", client.Adresse, client.NumeroTelephone);
         }
-        else
+
+        table.Write();
+    }
+
+    static void DisplayComptes()
+    {
+        var comptes = BankOperations.GetComptes();
+        Console.WriteLine("\nComptes in the database:");
+
+        var table = new ConsoleTable("Compte ID", "Client ID", "Solde", "TypeCompte", "DateOuverture");
+        foreach (var compte in comptes)
         {
-            Console.WriteLine("No records found.");
+            table.AddRow(compte.CompteId, compte.ClientId, compte.Solde, compte.TypeCompte, compte.DateOuverture);
         }
-        Console.WriteLine(new string('-', 40) + "\n");
+
+        table.Write();
+    }
+
+    static void DisplayTransactions()
+    {
+        var transactions = BankOperations.GetTransactions();
+        Console.WriteLine("\nTransactions in the database:");
+
+        var table = new ConsoleTable("Transaction ID", "Compte ID", "TypeTransaction", "Montant", "DateTransaction");
+        foreach (var transaction in transactions)
+        {
+            table.AddRow(transaction.TransactionId, transaction.CompteId, transaction.TypeTransaction, transaction.Montant, transaction.DateTransaction);
+        }
+
+        table.Write();
     }
 }
